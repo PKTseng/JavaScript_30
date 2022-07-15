@@ -5,9 +5,9 @@ let hour = document.querySelector('.hour-hand');
 function setDate() {
   let nowTime = new Date();
 
-  let secondsDegrees = nowTime.getSeconds() * 6;
-  let minsDegrees = nowTime.getMinutes() * 6;
-  let hourDegrees = nowTime.getHours() * 12;
+  let secondsDegrees = nowTime.getSeconds() * 6; // 360/60
+  let minsDegrees = nowTime.getMinutes() * 6; // 360/60
+  let hourDegrees = nowTime.getHours() * 30; // 360/12
 
   second.style.transform = `rotate(${secondsDegrees}deg)`;
   min.style.transform = `rotate(${minsDegrees}deg)`;
