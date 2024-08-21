@@ -56,28 +56,34 @@
     <audio data-key="76" src="sounds/tink.wav"></audio>
 
     <script>
-      function playMusic(e) {
-        // 處理聲音
-        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-        if (audio) audio.play();
+      const playSound = (e) => {
+        // 抓取音效跟音檔按鍵 DOM 元素並讓音檔執行
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+        const key = document.querySelector(`div[data-key="${e.keyCode}"]`)
+        if (!audio) return
 
-        //處理樣式
-        const dom = document.querySelector(`div[data-key="${e.keyCode}"]`);
-        //  classList 有 add、remove、target 這三個功能
-        if (dom) dom.classList.add('playing');
+        audio.play()
 
-        audio.currentTime = 0;
+        // 在音檔按鍵 DOM 元素上加入 class
+        key.classList.add('playing')
+
+        audio.currentTime = 0
+        // 在 audio 或 video 元件中，currentTime 屬性表示當前播放位置（以秒為單位）。設定 currentTime = 0 會將播放位置重置為音頻或視頻的開頭。
       }
 
-      function removeTransition(e) {
-        if (e.propertyName === 'transform') e.currentTarget.classList.remove('playing');
+      const removeTransition = (e) => {
+        if (e.propertyName !== 'transform') return
+
+        e.target.classList.remove('playing')
       }
 
-      document.querySelectorAll('.key').forEach((key) => {
-        key.addEventListener('transitionend', removeTransition);
-      });
+      // 重製按鍵的 style
+      const keys = Array.from(document.querySelectorAll('.key'))
 
-      window.addEventListener('keydown', playMusic);
+      keys.forEach((key) => key.addEventListener('transitionend', removeTransition))
+      // transitionend 是一個事件，用於監聽 CSS 轉換（transition）完成的時候。當一個元素的 CSS 轉換結束時，transitionend 事件會被觸發。這個事件可以用來在轉換結束後執行一些特定的操作，比如移除一個 class，開始另一個動畫，或是觸發一些其他的功能。
+
+      window.addEventListener('keydown', playSound)
     </script>
   </body>
 </html>
