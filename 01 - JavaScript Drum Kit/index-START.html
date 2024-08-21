@@ -56,36 +56,31 @@
     <audio data-key="KeyL" src="sounds/tink.wav"></audio>
 
     <script>
-      const playSound = (e) => {
-        console.log(`KeyCode: ${e.keyCode}, Key: ${e.key}, Code: ${e.code}`)
+      window.addEventListener('keydown', (e) => {
+        // console.log(e)
 
-        // 抓取音效跟音檔按鍵 DOM 元素並讓音檔執行
+        // 使用 e.code 抓取音效 DOM 元素並讓音檔執行
         const audio = document.querySelector(`audio[data-key="${e.code}"]`)
-        const key = document.querySelector(`div[data-key="${e.code}"]`)
+        // console.log(audio)
         if (!audio) return
 
+        audio.currentTime = 0 // 重置音效播放時間
         audio.play()
 
-        // 在音檔按鍵 DOM 元素上加入 class
-        key.classList.add('playing')
+        // 使用 e.code 抓取按鍵 DOM 元素並加上 class
+        const key = document.querySelector(`div[data-key="${e.code}"]`)
+        if (key) {
+          key.classList.add('playing')
+        }
+      })
 
-        audio.currentTime = 0
-        // 在 audio 或 video 元件中，currentTime 屬性表示當前播放位置（以秒為單位）。設定 currentTime = 0 會將播放位置重置為音頻或視頻的開頭。
-      }
-
-      const removeTransition = (e) => {
-        if (e.propertyName !== 'transform') return
-
-        e.target.classList.remove('playing')
-      }
-
-      // 重製按鍵的 style
-      const keys = Array.from(document.querySelectorAll('.key'))
-
-      keys.forEach((key) => key.addEventListener('transitionend', removeTransition))
-      // transitionend 是一個事件，用於監聽 CSS 轉換（transition）完成的時候。當一個元素的 CSS 轉換結束時，transitionend 事件會被觸發。這個事件可以用來在轉換結束後執行一些特定的操作，比如移除一個 class，開始另一個動畫，或是觸發一些其他的功能。
-
-      window.addEventListener('keydown', playSound)
+      // 當 transition 結束時移除 class
+      const keys = document.querySelectorAll('.key')
+      keys.forEach((key) =>
+        key.addEventListener('transitionend', () => {
+          key.classList.remove('playing')
+        })
+      )
     </script>
   </body>
 </html>
